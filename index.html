@@ -1,269 +1,343 @@
-<!DOCTYPE html><html lang="es"><head>
-  <meta charset="UTF-8" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Registro de Viajes</title>
-  <link rel="manifest" href="manifest.json" />
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 10px; margin: 0; background: #f9f9f9; }
-    label, select, input, button { margin: 5px 0; width: 100%; box-sizing: border-box; font-size: 16px; }
-    button { padding: 10px; cursor: pointer; border-radius: 5px; border: none; background-color: #007bff; color: white; transition: background-color 0.3s ease; }
-    button:hover { background-color: #0056b3; }
-    .acciones, .resumen, .archivos { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-    table { border-collapse: collapse; width: 100%; overflow-x: auto; display: block; font-size: 14px; background-color: white; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-    th { background-color: #f2f2f2; }
-    .producto-premium { background-color: red; color: white; font-weight: bold; }
-    .producto-magna { background-color: green; color: white; font-weight: bold; }
-    .producto-diesel { background-color: black; color: white; font-weight: bold; }
-    .resumen .premium { color: red; font-weight: bold; }
-    .resumen .magna { color: green; font-weight: bold; }
-    .resumen .diesel { color: black; font-weight: bold; background-color: white; padding: 2px 4px; border-radius: 4px; }
-    .turno-noche { background-color: #fff8b3; color: black; font-weight: bold; }
-    .turno-dia { background-color: #2c3e50; color: white; font-weight: bold; }
-    #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease; }
-    #modal-content { background: white; padding: 20px; border-radius: 10px; width: 90%; max-width: 400px; animation: slideDown 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-    @keyframes fadeIn {
-      from { opacity: 0; } to { opacity: 1; }
+    body{font-family:Arial,sans-serif;padding:10px;margin:0;background:#f9f9f9}
+    label,select,input,button{margin:5px 0;width:100%;box-sizing:border-box;font-size:16px}
+    button{padding:10px;cursor:pointer;border-radius:5px;border:none;background-color:#007bff;color:#fff;transition:background-color .3s ease}
+    button:hover{background-color:#0056b3}
+    table{border-collapse:collapse;width:100%;background:#fff;margin-top:15px}
+    th,td{border:1px solid #ddd;padding:8px;text-align:center}
+    th{background:#f2f2f2}
+
+    .btn-editar{background:#ffc107;color:#000}
+    .btn-borrar{background:#dc3545;color:#fff}
+    .btn-principal{background:green;color:#fff}
+    .btn-finalizarmes{background:#D91000;color:#fff}
+
+    .producto-Premium{background:red;color:#fff;font-weight:bold}
+    .producto-Magna{background:green;color:#fff;font-weight:bold}
+    .producto-Diesel{background:#000;color:#fff;font-weight:bold}
+
+    .turno-noche{background:#fff8b3;color:#000;font-weight:bold}
+    .turno-dia{background:#060839;color:#fff;font-weight:bold}
+
+    .resumen-Premium{background:red;color:#fff;font-weight:bold;padding:2px 4px;border-radius:4px}
+    .resumen-Magna{background:green;color:#fff;font-weight:bold;padding:2px 4px;border-radius:4px}
+    .resumen-Diesel{background:#000;color:#fff;font-weight:bold;padding:2px 4px;border-radius:4px}
+
+    .fzc2460,.fzv1452,.fzv1449{
+      background:#fff;color:#000;font-weight:bold;
+      padding:2px 4px;border-radius:4px;border:2px solid #000
     }
-    @keyframes slideDown {
-      from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; }
+
+    #modal{
+      display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:1000
     }
-    @media screen and (max-width: 480px) {
-      body { padding: 5px; font-size: 15px; }
-      button { font-size: 14px; padding: 8px; }
-      th, td { font-size: 12px; padding: 6px; }
-      #modal-content { width: 95%; padding: 15px; }
+    #modal-content{
+      background:#fff;padding:20px;border-radius:10px;width:90%;max-width:400px;
+      box-shadow:0 4px 15px rgba(0,0,0,.2)
+    }
+
+    .destino-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:10px;margin-top:10px
+    }
+    .destino-box{
+      background:#f1f1f1;border-radius:6px;padding:8px;text-align:center;
+      font-weight:bold;box-shadow:1px 1px 4px rgba(0,0,0,.1)
     }
   </style>
 </head>
 <body>
+
   <h1>Registro de Viajes</h1>
   <p>Fecha actual: <span id="fechaActual"></span></p>
-  <div class="acciones">
-    <button onclick="abrirModal()">Agregar Viaje</button>
-    <button onclick="finalizarMes()">Finalizar Mes Actual</button>
+
+  <!-- Botones principales -->
+  <div>
+    <button class="btn-principal" onclick="abrirModal()">Agregar Viaje</button>
+    <button class="btn-finalizarmes" onclick="finalizarMes()">Finalizar Mes Actual</button>
     <button onclick="mostrarArchivados()">Ver Registros Anteriores</button>
     <button onclick="volverAActual()">Volver a Mes Actual</button>
   </div>
-  <div class="resumen">
-    <p>Total de viajes: <span id="totalViajes">0</span></p>
-    <p><span class="premium">Premium: <span id="totalPremium">0</span></span> |
-       <span class="magna">Magna: <span id="totalMagna">0</span></span> |
-       <span class="diesel">Diésel: <span id="totalDiesel">0</span></span></p>
-    <p>Velam: <span id="velam">0</span> | San Juan: <span id="sanjuan">0</span></p>
-    <p>Noyowee: <span id="noyo">0</span> | 0324: <span id="e0324">0</span></p>
-    <p>Bajos: <span id="bajos">0</span> | SLA: <span id="sla">0</span></p>
-    <p>Km totales: <span id="totalKm">0</span> km</p>
+
+  <!-- Resumen -->
+  <p>Total de viajes: <span id="totalViajes">0</span></p>
+  <p>
+    <span class="resumen-Premium">Premium: <span id="totalPremium">0</span></span>
+    <span class="resumen-Magna">Magna: <span id="totalMagna">0</span></span>
+    <span class="resumen-Diesel">Diesel: <span id="totalDiesel">0</span></span>
+  </p>
+  <p>
+    <span class="fzc2460">fzc2460: <span id="fzc2460">0</span></span>
+    <span class="fzv1449">fzv1449: <span id="fzv1449">0</span></span>
+    <span class="fzv1452">fzv1452: <span id="fzv1452">0</span></span>
+  </p>
+
+  <!-- Resumen por destino -->
+  <div class="destino-grid">
+    <div class="destino-box">Velam: <span id="velam">0</span></div>
+    <div class="destino-box">San Juan: <span id="sanjuan">0</span></div>
+    <div class="destino-box">Noyowee: <span id="noyo">0</span></div>
+    <div class="destino-box">0324: <span id="e0324">0</span></div>
+    <div class="destino-box">Bajos: <span id="bajos">0</span></div>
+    <div class="destino-box">SLA: <span id="sla">0</span></div>
   </div>
-  <div class="archivos" id="archivos" style="display:none;"></div>
+
+  <div id="archivos" style="display:none"></div>
+
+  <!-- Tabla principal -->
   <table id="tablaViajes">
     <thead>
-      <tr><th>Día</th><th>Mes</th><th>Año</th><th>Destino</th><th>Producto</th><th>Acciones</th></tr>
+      <tr>
+        <th>Día</th><th>Mes</th><th>Destino</th>
+        <th>Producto</th><th>Unidad</th><th>Acciones</th>
+      </tr>
     </thead>
     <tbody></tbody>
   </table>
+
+  <!-- Modal -->
   <div id="modal">
     <div id="modal-content">
       <div class="formulario">
-        <label for="dia">Día:</label>
-        <input type="number" id="dia" min="1" max="31">
-        <label for="mes">Mes:</label>
-        <select id="mes">
-          <option>Enero</option><option>Febrero</option><option>Marzo</option>
-          <option>Abril</option><option>Mayo</option><option>Junio</option>
-          <option>Julio</option><option>Agosto</option><option>Septiembre</option>
-          <option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
-        </select>
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha">
+
         <label for="destino">Destino:</label>
         <select id="destino">
-          <option>Velam</option><option>San Juan de los Llanos</option><option>Noyowee</option>
-          <option>Estación 0324</option><option>Bajos del Ejido</option><option>San Luis Acatlán</option>
+          <option>Velam</option><option>San Juan de los Llanos</option>
+          <option>Noyowee</option><option>Estación 0324</option>
+          <option>Bajos del Ejido</option><option>San Luis Acatlán</option>
         </select>
-        <label for="producto">Producto:</label>
+
+        <label>Producto:</label>
         <select id="producto">
-          <option>Premium</option><option>Magna</option><option>Diésel</option>
+          <option>Premium</option><option>Magna</option><option>Diesel</option>
         </select>
-        <label for="turno">Turno:</label>
+
+        <label>Turno:</label>
         <select id="turno">
           <option>Turno 1</option><option>Turno 2</option>
         </select>
+
+        <label>Unidad:</label>
+        <select id="unidad">
+          <option>fzc2460</option><option>fzv1449</option><option>fzv1452</option>
+        </select>
+
         <button id="btnAgregar" onclick="agregarViaje()">Agregar Viaje</button>
         <button onclick="cerrarModal()">Cerrar</button>
-        <button id="btnCancelar" onclick="cancelarEdicion()" style="display: none;">Cancelar Edición</button>
+        <button id="btnCancelar" onclick="cancelarEdicion()" style="display:none">Cancelar</button>
       </div>
     </div>
   </div>
+
+  <!-- Scripts -->
   <script>
-    let editandoIndex = -1;
-    let viajes = JSON.parse(localStorage.getItem('viajesActivos')) || [];
-    const archivados = JSON.parse(localStorage.getItem('viajesArchivados')) || {};
-    let claveActual = null;
-    const distanciasKm = {
-      "Velam": 392, "San Juan de los Llanos": 410, "Noyowee": 405,
-      "Estación 0324": 398, "Bajos del Ejido": 284, "San Luis Acatlán": 450
-    };function actualizarFecha() {
-  const f = new Date();
-  document.getElementById('fechaActual').textContent =
-    f.getDate().toString().padStart(2, '0') + '/' +
-    (f.getMonth() + 1).toString().padStart(2, '0') + '/' +
-    f.getFullYear();
-}
+  window.onload=function(){
 
-function guardarDatos() {
-  localStorage.setItem('viajesActivos', JSON.stringify(viajes));
-  localStorage.setItem('viajesArchivados', JSON.stringify(archivados));
-}
+    /* ==============================
+       Variables globales
+    ============================== */
+    let editandoIndex=-1;
+    let viajes=JSON.parse(localStorage.getItem("viajesActivos"))||[];
+    const archivados=JSON.parse(localStorage.getItem("viajesArchivados"))||{};
+    let claveActual=null;
 
-function limpiarFormulario() {
-  ['dia', 'mes', 'destino', 'producto', 'turno'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('mes').selectedIndex = 0;
-  document.getElementById('destino').selectedIndex = 0;
-  document.getElementById('producto').selectedIndex = 0;
-  document.getElementById('turno').selectedIndex = 0;
-}
+    /* ==============================
+       Función de validación
+    ============================== */
+    const ok=v=>v&&typeof v==="object"&&v.producto&&v.destino&&v.unidad&&v.mes!=null&&v.dia!=null&&v.anio!=null;
 
-function agregarViaje() {
-  const anio = new Date().getFullYear();
-  const viaje = {
-    dia: document.getElementById('dia').value,
-    mes: document.getElementById('mes').value,
-    anio,
-    destino: document.getElementById('destino').value,
-    producto: document.getElementById('producto').value,
-    turno: document.getElementById('turno').value
-  };
-  if (Object.values(viaje).includes('')) return alert('Completa todos los campos.');
+    // Limpieza inicial
+    viajes=viajes.filter(ok);
+    for(const k in archivados){archivados[k]=(archivados[k]||[]).filter(ok)}
+    localStorage.setItem("viajesActivos",JSON.stringify(viajes));
+    localStorage.setItem("viajesArchivados",JSON.stringify(archivados));
 
-  if (editandoIndex >= 0) {
-    if (claveActual) archivados[claveActual][editandoIndex] = viaje;
-    else viajes[editandoIndex] = viaje;
-    editandoIndex = -1;
-    document.getElementById('btnAgregar').textContent = 'Agregar Viaje';
-    document.getElementById('btnCancelar').style.display = 'none';
-  } else {
-    if (claveActual) archivados[claveActual].push(viaje);
-    else viajes.push(viaje);
+    /* ==============================
+       Utilidades
+    ============================== */
+    function guardar(){
+      localStorage.setItem("viajesActivos",JSON.stringify(viajes));
+      localStorage.setItem("viajesArchivados",JSON.stringify(archivados));
+    }
+    function limpiar(){
+      document.getElementById("fecha").value="";
+      document.getElementById("destino").selectedIndex=0;
+      document.getElementById("producto").selectedIndex=0;
+      document.getElementById("turno").selectedIndex=0;
+      document.getElementById("unidad").selectedIndex=0;
+    }
+
+    /* ==============================
+       Renderizado
+    ============================== */
+    function renderTabla(lista=viajes){
+      const tbody=document.querySelector("#tablaViajes tbody");
+      tbody.innerHTML="";
+      lista.filter(ok).forEach((v,i)=>{
+        const claseProducto=v.producto==="Premium"?"producto-Premium":v.producto==="Magna"?"producto-Magna":"producto-Diesel";
+        const claseTurno=v.turno==="Turno 1"?"turno-dia":"turno-noche";
+        tbody.innerHTML+=`
+          <tr class="${claseTurno}">
+            <td>${v.dia}</td>
+            <td>${v.mes}</td>
+            <td>${v.destino}</td>
+            <td class="${claseProducto}">${v.producto}</td>
+            <td>${v.unidad}</td>
+            <td>
+              <button class="btn-editar" onclick="editarViaje(${i})">Editar</button>
+              <button class="btn-borrar" onclick="borrarViaje(${i})">Borrar</button>
+            </td>
+          </tr>`;
+      });
+    }
+
+    function resumen(){
+      const lista=(claveActual?archivados[claveActual]:viajes).filter(ok);
+      const r={
+        total:lista.length,
+        productos:{Premium:0,Magna:0,Diesel:0},
+        destinos:{"Velam":0,"San Juan de los Llanos":0,"Noyowee":0,"Estación 0324":0,"Bajos del Ejido":0,"San Luis Acatlán":0},
+        unidad:{fzc2460:0,fzv1452:0,fzv1449:0}
+      };
+      lista.forEach(v=>{
+        r.productos[v.producto]++;r.destinos[v.destino]++;r.unidad[v.unidad]++;
+      });
+      document.getElementById("totalViajes").textContent=r.total;
+      document.getElementById("totalPremium").textContent=r.productos.Premium;
+      document.getElementById("totalMagna").textContent=r.productos.Magna;
+      document.getElementById("totalDiesel").textContent=r.productos.Diesel;
+      document.getElementById("velam").textContent=r.destinos["Velam"];
+      document.getElementById("sanjuan").textContent=r.destinos["San Juan de los Llanos"];
+      document.getElementById("noyo").textContent=r.destinos["Noyowee"];
+      document.getElementById("e0324").textContent=r.destinos["Estación 0324"];
+      document.getElementById("bajos").textContent=r.destinos["Bajos del Ejido"];
+      document.getElementById("sla").textContent=r.destinos["San Luis Acatlán"];
+      document.getElementById("fzv1452").textContent=r.unidad.fzv1452;
+      document.getElementById("fzv1449").textContent=r.unidad.fzv1449;
+      document.getElementById("fzc2460").textContent=r.unidad.fzc2460;
+    }
+
+    /* ==============================
+       Acciones principales
+    ============================== */
+    window.agregarViaje=function(){
+      const f=document.getElementById("fecha").value;
+      if(!f)return alert("Completa todos los campos.");
+
+      const[a,m,d]=f.split("-");
+      const meses=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+      const v={dia:parseInt(d),mes:meses[parseInt(m)-1],anio:parseInt(a),
+        destino:document.getElementById("destino").value,
+        producto:document.getElementById("producto").value,
+        turno:document.getElementById("turno").value,
+        unidad:document.getElementById("unidad").value};
+
+      if(editandoIndex>=0){
+        if(claveActual)archivados[claveActual][editandoIndex]=v;
+        else viajes[editandoIndex]=v;
+        editandoIndex=-1;
+        document.getElementById("btnAgregar").textContent="Agregar Viaje";
+        document.getElementById("btnCancelar").style.display="none";
+      }else{
+        if(claveActual)archivados[claveActual].push(v);
+        else viajes.push(v);
+      }
+      guardar();limpiar();resumen();
+      if(claveActual)renderTabla(archivados[claveActual]);else renderTabla(viajes);
+      cerrarModal();
+    }
+
+    window.editarViaje=function(i){
+      const lista=(claveActual?archivados[claveActual]:viajes).filter(ok);
+      const v=lista[i];
+      const meses=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+      const m=meses.indexOf(v.mes);
+      document.getElementById("fecha").value=`${v.anio}-${(m+1).toString().padStart(2,"0")}-${v.dia.toString().padStart(2,"0")}`;
+      document.getElementById("destino").value=v.destino;
+      document.getElementById("producto").value=v.producto;
+      document.getElementById("turno").value=v.turno;
+      document.getElementById("unidad").value=v.unidad;
+      editandoIndex=i;
+      document.getElementById("btnAgregar").textContent="Guardar Cambios";
+      document.getElementById("btnCancelar").style.display="block";
+      abrirModal();
+    }
+
+    window.cancelarEdicion=function(){
+      editandoIndex=-1;limpiar();
+      document.getElementById("btnAgregar").textContent="Agregar Viaje";
+      document.getElementById("btnCancelar").style.display="none";
+      cerrarModal();
+    }
+
+    window.borrarViaje=function(i){
+      const lista=claveActual?archivados[claveActual]:viajes;
+      if(confirm("¿Eliminar este viaje?"))lista.splice(i,1);
+      guardar();resumen();
+      if(claveActual)renderTabla(archivados[claveActual]);else renderTabla(viajes);
+    }
+
+    window.finalizarMes=function(){
+      if(viajes.length===0)return alert("No hay viajes que archivar.");
+      const f=new Date();
+      const meses=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+      const c=`${f.getFullYear()}-${meses[f.getMonth()]}`;
+      archivados[c]=viajes.slice();
+      viajes.length=0;
+      guardar();resumen();renderTabla();
+      alert(`Viajes archivados bajo "${c}"`);
+    }
+
+    /* ==============================
+       Navegación entre archivados
+    ============================== */
+    window.mostrarArchivados=function(){
+      const cont=document.getElementById("archivos");
+      cont.style.display="block";
+      cont.innerHTML="<h3>Registros Archivados:</h3>";
+      Object.keys(archivados).sort().reverse().forEach(k=>{
+        const b=document.createElement("button");
+        b.textContent=k;
+        b.onclick=()=>{
+          claveActual=k;editandoIndex=-1;
+          limpiar();resumen();renderTabla(archivados[k]);
+        };
+        cont.appendChild(b);
+      });
+    }
+
+    window.volverAActual=function(){
+      claveActual=null;editandoIndex=-1;
+      limpiar();resumen();renderTabla();
+    }
+
+    /* ==============================
+       Modal
+    ============================== */
+    window.abrirModal=function(){
+      document.getElementById("modal").style.display="flex";
+    }
+    window.cerrarModal=function(){
+      document.getElementById("modal").style.display="none";
+    }
+
+    /* ==============================
+       Inicio
+    ============================== */
+    document.getElementById("fechaActual").textContent=new Date().toLocaleDateString("es-MX");
+    resumen();renderTabla();
   }
-
-  guardarDatos(); limpiarFormulario(); actualizarResumen(); renderTabla(); cerrarModal();
-}
-
-function renderTabla(lista = viajes) {
-  const tbody = document.querySelector('#tablaViajes tbody');
-  tbody.innerHTML = '';
-  lista.sort((a, b) => {
-    const m = m => ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].indexOf(m);
-    return a.anio - b.anio || m(a.mes) - m(b.mes) || a.dia - b.dia || (a.turno === "Turno 1" ? -1 : 1);
-  }).forEach((v, i) => {
-    const claseProducto = v.producto === 'Premium' ? 'producto-premium' : v.producto === 'Magna' ? 'producto-magna' : 'producto-diesel';
-    const claseTurno = v.turno === 'Turno 1' ? 'turno-dia' : 'turno-noche';
-    tbody.innerHTML += `<tr>
-      <td class="${claseTurno}">${v.dia}</td>
-      <td>${v.mes}</td>
-      <td>${v.anio}</td>
-      <td>${v.destino}</td>
-      <td class="${claseProducto}">${v.producto}</td>
-      <td><button onclick="editarViaje(${i})">Editar</button><button onclick="borrarViaje(${i})">Borrar</button></td>
-    </tr>`;
-  });
-}
-
-function actualizarResumen() {
-  const lista = claveActual ? archivados[claveActual] : viajes;
-  const resumen = { total: lista.length, productos: { Premium: 0, Magna: 0, Diésel: 0 }, destinos: {} };
-  Object.keys(distanciasKm).forEach(d => resumen.destinos[d] = 0);
-  let totalKm = 0;
-  lista.forEach(v => {
-    totalKm += distanciasKm[v.destino] || 0;
-    resumen.productos[v.producto]++;
-    resumen.destinos[v.destino]++;
-  });
-  document.getElementById('totalViajes').textContent = resumen.total;
-  document.getElementById('totalPremium').textContent = resumen.productos.Premium;
-  document.getElementById('totalMagna').textContent = resumen.productos.Magna;
-  document.getElementById('totalDiesel').textContent = resumen.productos.Diésel;
-  document.getElementById('velam').textContent = resumen.destinos.Velam;
-  document.getElementById('sanjuan').textContent = resumen.destinos["San Juan de los Llanos"];
-  document.getElementById('noyo').textContent = resumen.destinos.Noyowee;
-  document.getElementById('e0324').textContent = resumen.destinos["Estación 0324"];
-  document.getElementById('bajos').textContent = resumen.destinos["Bajos del Ejido"];
-  document.getElementById('sla').textContent = resumen.destinos["San Luis Acatlán"];
-  document.getElementById('totalKm').textContent = totalKm;
-}
-
-function editarViaje(i) {
-  const lista = claveActual ? archivados[claveActual] : viajes;
-  const v = lista[i];
-  document.getElementById('dia').value = v.dia;
-  document.getElementById('mes').value = v.mes;
-  document.getElementById('destino').value = v.destino;
-  document.getElementById('producto').value = v.producto;
-  document.getElementById('turno').value = v.turno;
-  editandoIndex = i;
-  document.getElementById('btnAgregar').textContent = 'Guardar Cambios';
-  document.getElementById('btnCancelar').style.display = 'block';
-  abrirModal();
-}
-
-function cancelarEdicion() {
-  editandoIndex = -1;
-  limpiarFormulario();
-  document.getElementById('btnAgregar').textContent = 'Agregar Viaje';
-  document.getElementById('btnCancelar').style.display = 'none';
-  cerrarModal();
-}
-
-function borrarViaje(i) {
-  const lista = claveActual ? archivados[claveActual] : viajes;
-  if (confirm('¿Eliminar este viaje?')) lista.splice(i, 1);
-  guardarDatos(); actualizarResumen(); renderTabla();
-}
-
-function finalizarMes() {
-  if (viajes.length === 0) return alert('No hay viajes que archivar.');
-  const clave = `${viajes[0].anio}-${viajes[0].mes}`;
-  archivados[clave] = viajes.slice();
-  viajes.length = 0;
-  guardarDatos(); actualizarResumen(); renderTabla();
-  alert(`Viajes archivados bajo "${clave}"`);
-}
-
-function mostrarArchivados() {
-  const cont = document.getElementById('archivos');
-  cont.style.display = 'block';
-  cont.innerHTML = '<h3>Registros Archivados:</h3>';
-  Object.keys(archivados).sort().reverse().forEach(k => {
-    const btn = document.createElement('button');
-    btn.textContent = k;
-    btn.onclick = () => {
-      claveActual = k;
-      editandoIndex = -1;
-      limpiarFormulario();
-      actualizarResumen();
-      renderTabla(archivados[k]);
-    };
-    cont.appendChild(btn);
-  });
-}
-
-function volverAActual() {
-  claveActual = null;
-  editandoIndex = -1;
-  limpiarFormulario();
-  actualizarResumen();
-  renderTabla();
-}
-
-function abrirModal() {
-  document.getElementById('modal').style.display = 'flex';
-}
-
-function cerrarModal() {
-  document.getElementById('modal').style.display = 'none';
-}
-
-actualizarFecha(); actualizarResumen(); renderTabla();
-
   </script>
+
 </body>
 </html>
