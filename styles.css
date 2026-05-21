@@ -1,0 +1,55 @@
+body{font-family:Arial,sans-serif;padding:10px;margin:0;background:#000;color:#fff;user-select:none}
+button{padding:10px;cursor:pointer;font-weight:bold;border-radius:5px;border:2px solid #fff;background-color:#007bff;color:#fff;transition:background-color .3s ease}
+label,select,input,button{margin:1px 0;width:100%;box-sizing:border-box;font-size:16px}
+table{border-collapse:collapse;width:100%;background:#111;margin-top:10px;color:#fff}
+th{background:#222;border:2px solid #fff;padding:8px;text-align:center;user-select:none}
+td{border:3px solid #fff;padding:8px;text-align:center;user-select:none}
+h1{background:#222;border-radius:5px;padding:8px;text-align:center;font-weight:bold;border:3px solid #fff}
+.Fecha{background:#222;border-radius:5px;padding:8px;text-align:center;font-weight:bold;border:2px solid #fff}
+
+.btn-agregarViaje{padding:8px;background:green;color:#fff;width:100%;font-weight:bold;font-size:16px;border-radius:5px;border:3px solid #fff}
+.btn-finalizarmes{padding:8px;background:red;color:#fff;width:50%;font-weight:bold;font-size:16px;border-radius:5px;border:3px solid #fff}
+.btn-verResumen{padding:8px;background:#007bff;color:#fff;width:50%;font-weight:bold;font-size:16px;border-radius:5px;border:3px solid #fff}
+.boton-Agregarviaje{padding:8px;background:green;color:#fff;width:50%;font-weight:bold;font-size:16px;border-radius:5px;border:3px solid #fff}
+.btn-cerrar{padding:8px;background:red;color:#fff;width:50%;font-weight:bold;font-size:16px;border-radius:5px;border:2px solid #fff}
+
+.producto-Premium{background:red;color:#fff;font-weight:bold}
+.producto-Magna{background:green;color:#fff;font-weight:bold}
+.producto-Diesel{background:#000;color:#fff;font-weight:bold}
+
+.turno-noche{background:#fff8b3;color:#000;font-weight:bold}
+.turno-dia{background:#060839;color:#fff;font-weight:bold}
+
+.total-grid{display:grid;grid-template-columns:1fr;gap:5px;margin-top:10px;}
+.total-viajes{background:#222;border-radius:5px;padding:8px;text-align:center;font-weight:bold;border:3px solid #fff}
+
+.producto-grid{display:grid;grid-template-columns:repeat(3,1fr);box-sizing:border-box;margin-top:10px;border:1.5px solid#fff}
+.resumen-Premium{background:red;padding:8px;text-align:center;font-weight:bold;border:1.5px solid #fff}
+.resumen-Magna{background:green;padding:8px;text-align:center;font-weight:bold;border:1.5px solid #fff}
+.resumen-Diesel{background:#000;padding:8px;text-align:center;font-weight:bold;border:1.5px solid #fff}
+
+.operador-grid{display:grid;grid-template-columns:repeat(2,1fr);box-sizing:border-box;margin-top:10px;border:1.5px solid #fff}
+.Damian{background:#222;color:#fff;font-weight:bold;padding:8px;text-align:center;border:1.5px solid #fff;}
+.Cosme{background:#222;color:#fff;font-weight:bold;padding:8px;text-align:center;border:1.5px solid #fff;}
+
+.destino-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));box-sizing:border-box;margin-top:10px;border:1.5px solid#fff}
+.destino-box {background:#222;padding:8px;text-align:center;font-weight:bold;border:1.5px solid #fff}
+
+#modal-resumen {display:none;position:fixed;top:0; left:0;width:100%; height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:1100;}
+#modal-resumen-content {background:#222;padding:20px;border-radius:10px;border:2px solid #fff;width:90%; max-width:500px;box-shadow:0 4px 15px rgba(0,0,0,.3);color:#fff;text-align:center;}
+
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:1000}
+#modal-content{background:#222;padding:20px;border-radius:10px;border:2px solid #fff;width:90%;max-width:400px;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+
+/* --- ESTILOS AGREGADOS: ASISTENTE PASO A PASO (WIZARD) --- */
+.wizard-step h3 {margin: 0 0 10px 0; color: #007bff; font-size: 20px; text-align: left;}
+.wizard-buttons-container {display: flex; flex-direction: column; gap: 8px; width: 100%; box-sizing: border-box;}
+.btn-wizard-option {background: #222; color: #fff; border: 2px solid #fff; border-radius: 8px; padding: 14px; font-weight: bold; font-size: 16px; cursor: pointer; text-align: center; transition: background-color 0.2s ease, border-color 0.2s ease;}
+.btn-wizard-option:active {transform: scale(0.98);}
+.wizard-nav {display: flex; gap: 10px; margin-top: 15px; width: 100%;}
+.wizard-nav button {padding: 12px; font-size: 16px; font-weight: bold;}
+/* -------------------------------------------------------- */
+
+#editOptions{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;padding:15px;border-radius:10px;border:2px solid #fff;box-shadow:0 4px 15px rgba(0,0,0,.4);z-index:2000;text-align:center;}
+#editOptions button{margin:8px;padding:10px 20px;background:#007bff;border:2px solid #fff;border-radius:6px;font-weight:bold;cursor:pointer;color:#fff;}
+#editOptions button:hover{background:#0056b3;}
