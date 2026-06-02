@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mis viajes</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#007bff">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Viajes</h1>
+  <p><span class="Fecha">Fecha: <span id="fechaActual"></span></span></p>
+
+  <div>
+    <button class="btn-agregarViaje" id="btnOpenModal">Agregar Viaje</button>
+    <button class="btn-finalizarmes" id="btnFinalizarMes">Finalizar Mes</button><button class="btn-verResumen" id="btnOpenResumen">Ver Resumen</button>
+  </div>
+
+  
+  <div id="modal-resumen">
+    <div id="modal-resumen-content">
+      <h2>Resumen de Viajes</h2>
+      <div class="total-grid">
+        <div class="total-viajes">Total de viajes: <span id="totalViajes">0</span></div>
+      </div>
+      <button id="btnOpenHistorial" style="background-color: #6c757d; margin: 10px 0; padding: 8px; width: 100%; font-weight: bold; border-radius: 5px; border: 2px solid #fff; color: #fff;">Ver Historial</button>
+      
+      <div class="producto-grid">
+        <div class="resumen-Premium">Premium: <span id="totalPremium">0</span></div>
+        <div class="resumen-Magna">Magna: <span id="totalMagna">0</span></div>
+        <div class="resumen-Diesel">Diesel: <span id="totalDiesel">0</span></div>
+      </div>
+
+      <div class="destino-grid">
+        <div class="destino-box">Velam: <span id="velam">0</span></div>
+        <div class="destino-box">San Juan: <span id="sanjuan">0</span></div>
+        <div class="destino-box">Noyowee: <span id="noyo">0</span></div>
+        <div class="destino-box">0324: <span id="e0324">0</span></div>
+        <div class="destino-box">Bajos: <span id="bajos">0</span></div>
+        <div class="destino-box">Fletes: <span id="flete">0</span></div>
+      </div>
+      <button class="btn-cerrar" id="btnCloseResumen">Cerrar</button>
+    </div>
+  </div>
+
+  <div id="archivos" style="display:none"></div>
+
+  <div id="editOptions">
+    <p>Opciones</p>
+    <button id="optEdit">Editar ✏️</button>
+    <button id="optDelete">Borrar 🗑️</button>
+    <button id="optCancel">Cancelar ❌</button>
+  </div>
+
+  <table id="tablaViajes">
+    <thead>
+      <tr>
+        <th>Día</th><th>Mes</th><th>Destino</th>
+        <th>Producto</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="modal">
+    <div id="modal-content">
+      
+      <input type="hidden" id="destino">
+      <input type="hidden" id="producto">
+      <input type="hidden" id="turno">
+      
+      <div class="wizard-step" id="step-1">
+        <div class="wizard-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3>Paso 1: Fecha</h3>
+          <button class="btn-wizard-close" style="width:auto; background:none; border:none; font-size:20px;">❌</button>
+        </div>
+        <label for="fecha">Selecciona el día:</label>
+        <input type="date" id="fecha" required style="margin: 15px 0; padding: 12px;">
+        <div class="wizard-nav">
+          <button class="btn-next">Siguiente ➡️</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" id="step-2" style="display:none;">
+        <div class="wizard-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3>Paso 2: Destino</h3>
+          <button class="btn-wizard-close" style="width:auto; background:none; border:none; font-size:20px;">❌</button>
+        </div>
+        <div class="wizard-buttons-container" style="margin: 15px 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0px;">
+          <button type="button" class="btn-wizard-option" data-field="destino" data-value="Velam">Velam</button>
+          <button type="button" class="btn-wizard-option" data-field="destino" data-value="San Juan">San Juan</button>
+          <button type="button" class="btn-wizard-option" data-field="destino" data-value="Noyowee">Noyowee</button>
+          <button type="button" class="btn-wizard-option" data-field="destino" data-value="0324">0324</button>
+          <button type="button" class="btn-wizard-option" data-field="destino" data-value="Bajos del Ejido">Bajos del Ejido</button>
+          <button type="button" class="btn-wizard-option" data-field="destino" data-value="Fletes">Fletes</button>
+        </div>
+
+        <div class="wizard-nav" style="display:flex; gap:10px;">
+          <button class="btn-prev">⬅️ Atrás</button>
+          <button class="btn-next">Siguiente ➡️</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" id="step-3" style="display:none;">
+        <div class="wizard-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3>Paso 3: Producto</h3>
+          <button class="btn-wizard-close" style="width:auto; background:none; border:none; font-size:20px;">❌</button>
+        </div>
+        <div class="wizard-buttons-container" style="margin: 15px 0;">
+          <button type="button" class="btn-wizard-option" data-field="producto" data-value="Premium">Premium</button>
+          <button type="button" class="btn-wizard-option" data-field="producto" data-value="Magna">Magna</button>
+          <button type="button" class="btn-wizard-option" data-field="producto" data-value="Diesel">Diesel</button>
+        </div>
+        <div class="wizard-nav" style="display:flex; gap:10px;">
+          <button class="btn-prev">⬅️ Atrás</button>
+          <button class="btn-next">Siguiente ➡️</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" id="step-4" style="display:none;">
+        <div class="wizard-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3>Paso 4: Turno</h3>
+          <button class="btn-wizard-close" style="width:auto; background:none; border:none; font-size:20px;">❌</button>
+        </div>
+        <div class="wizard-buttons-container" style="margin: 15px 0;">
+          <button type="button" class="btn-wizard-option" data-field="turno" data-value="Turno 1">Turno 1</button>
+          <button type="button" class="btn-wizard-option" data-field="turno" data-value="Turno 2">Turno 2</button>
+        </div>
+        <div class="wizard-nav" style="display:flex; gap:10px;">
+          <button class="btn-prev">⬅️ Atrás</button>
+          <button id="btnAgregar" class="boton-Agregarviaje">Guardar Viaje 💾</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="pantalla-historial" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.5); justify-content: center; align-items: center; z-index: 1200;">
+    <div id="modal-resumen-content">
+      <h2>Historial de Meses</h2>
+      <div id="lista-meses" style="margin-top: 15px; max-height: 250px; overflow-y: auto; padding-right: 5px;"></div>
+      <button class="btn-cerrar" id="btnCerrarHistorial" style="width: 100%; margin-top: 15px;">Volver al Resumen</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
